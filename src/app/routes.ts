@@ -6,6 +6,7 @@ import RecipeDetail from "./pages/RecipeDetail";
 import Search from "./pages/Search";
 import About from "./pages/About";
 import CreateRecipe from "./pages/CreateRecipe";
+import EditRecipe from "./pages/EditRecipe";
 import AuthCallback from "./pages/AuthCallback";
 
 export const router = createBrowserRouter([
@@ -36,6 +37,10 @@ export const router = createBrowserRouter([
   {
     path: "/create",
     Component: CreateRecipe,
+  },
+  {
+    path: "/recipe/:id/edit",
+    Component: EditRecipe,
   },
   {
     path: "/auth/callback",
