@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router";
 import { Navigation } from "../components/Navigation";
-import { Clock, Users, Bookmark, ChefHat, Trash2 } from "lucide-react";
+import { Clock, Users, Bookmark, ChefHat, Trash2, Pencil } from "lucide-react";
 import { api } from "../../api";
 import { useAuth } from "../../context/AuthContext";
 
@@ -119,12 +119,20 @@ export default function RecipeDetail() {
                                     <Bookmark className="w-6 h-6" fill={saved ? 'currentColor' : 'none'} />
                                 </button>
                                 {isOwner && (
-                                    <button
-                                        onClick={handleDelete}
-                                        className="p-3 rounded-full border-2 border-red-200 text-red-400 hover:bg-red-50 transition-all"
-                                    >
-                                        <Trash2 className="w-6 h-6" />
-                                    </button>
+                                    <>
+                                        <button
+                                            onClick={() => navigate(`/recipe/${id}/edit`)}
+                                            className="p-3 rounded-full border-2 border-orange-900/20 text-orange-900/60 hover:border-orange-600 hover:text-orange-600 transition-all"
+                                        >
+                                            <Pencil className="w-6 h-6" />
+                                        </button>
+                                        <button
+                                            onClick={handleDelete}
+                                            className="p-3 rounded-full border-2 border-red-200 text-red-400 hover:bg-red-50 transition-all"
+                                        >
+                                            <Trash2 className="w-6 h-6" />
+                                        </button>
+                                    </>
                                 )}
                             </div>
                         </div>
