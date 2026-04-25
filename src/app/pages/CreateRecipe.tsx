@@ -58,7 +58,7 @@ function TagCombobox({
         : unselected;
 
     const addByQuery = () => {
-        if (suggestions.length > 0) {
+        if (query.trim() && suggestions.length > 0) {
             onAdd(suggestions[0].id);
             setQuery("");
             setOpen(false);
