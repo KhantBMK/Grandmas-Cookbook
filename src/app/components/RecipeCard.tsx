@@ -9,12 +9,13 @@ interface RecipeCardProps {
     servings: number;
     cuisine: string;
     meal_type: string;
+    is_recommended?: boolean;
 }
 
-export default function RecipeCard({ id, name, image_url, cook_time, servings, cuisine, meal_type }: RecipeCardProps) {
+export default function RecipeCard({ id, name, image_url, cook_time, servings, cuisine, meal_type, is_recommended = false }: RecipeCardProps) {
     return (
         <Link to={`/recipe/${id}`} className="group">
-            <div className="bg-white border-2 border-orange-900/20 rounded-2xl overflow-hidden hover:border-orange-600 transition-all">
+            <div className={`bg-white border-2 rounded-2xl overflow-hidden transition-all ${is_recommended ? 'border-pink-400 hover:border-pink-600' : 'border-orange-900/20 hover:border-orange-600'}`}>
                 <div className="aspect-square overflow-hidden">
                     {image_url ? (
                         <img

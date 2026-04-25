@@ -13,6 +13,7 @@ interface Recipe {
     servings: number;
     cuisine: string;
     meal_type: string;
+    is_recommended: boolean;
 }
 
 interface FilterOption {
