@@ -23,13 +23,19 @@ function levenshtein(a: string, b: string): number {
 function TagCombobox({
     allTags,
     selectedTags,
+    newTags,
     onAdd,
     onRemove,
+    onAddNew,
+    onRemoveNew,
 }: {
     allTags: Option[];
     selectedTags: number[];
+    newTags: string[];
     onAdd: (id: number) => void;
     onRemove: (id: number) => void;
+    onAddNew: (name: string) => void;
+    onRemoveNew: (name: string) => void;
 }) {
     const [query, setQuery] = useState("");
     const [open, setOpen] = useState(false);
@@ -58,16 +64,21 @@ function TagCombobox({
         : unselected;
 
     const addByQuery = () => {
-        if (query.trim() && suggestions.length > 0) {
-            onAdd(suggestions[0].id);
-            setQuery("");
-            setOpen(false);
+        const trimmed = query.trim();
+        if (!trimmed) return;
+        const exactMatch = allTags.find(t => t.name.toLowerCase() === trimmed.toLowerCase());
+        if (exactMatch && !selectedTags.includes(exactMatch.id)) {
+            onAdd(exactMatch.id);
+        } else if (!exactMatch && !newTags.includes(trimmed)) {
+            onAddNew(trimmed);
         }
+        setQuery("");
+        setOpen(false);
     };
 
     return (
         <div>
-            {selectedTags.length > 0 && (
+            {(selectedTags.length > 0 || newTags.length > 0) && (
                 <div className="flex flex-wrap gap-2 mb-3">
                     {selectedTags.map(id => {
                         const tag = allTags.find(t => t.id === id);
@@ -81,6 +92,14 @@ function TagCombobox({
                             </span>
                         );
                     })}
+                    {newTags.map(name => (
+                        <span key={name} className="flex items-center gap-1 px-3 py-1 bg-orange-400 text-white text-sm rounded-full">
+                            {name}
+                            <button type="button" onClick={() => onRemoveNew(name)} className="hover:text-orange-200 transition-colors">
+                                <X className="w-3 h-3" />
+                            </button>
+                        </span>
+                    ))}
                 </div>
             )}
             <div ref={ref} className="relative flex gap-2">
@@ -91,7 +110,7 @@ function TagCombobox({
                         onChange={e => { setQuery(e.target.value); setOpen(true); }}
                         onFocus={() => setOpen(true)}
                         onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); addByQuery(); } }}
-                        placeholder="Search tags..."
+                        placeholder="Search or create tags..."
                         className="w-full border-2 border-orange-900/20 rounded-lg px-4 py-2 focus:outline-none focus:border-orange-600 transition-colors"
                     />
                     {open && suggestions.length > 0 && (
@@ -212,6 +231,7 @@ export default function CreateRecipe() {
     const [selectedCuisine, setSelectedCuisine] = useState<number | null>(null);
     const [selectedMealType, setSelectedMealType] = useState<number | null>(null);
     const [selectedTags, setSelectedTags] = useState<number[]>([]);
+    const [newTags, setNewTags] = useState<string[]>([]);
 
     const [ingredients, setIngredients] = useState<string[]>([]);
     const [newIngredient, setNewIngredient] = useState("");
@@ -299,6 +319,7 @@ export default function CreateRecipe() {
                 cuisine_id: selectedCuisine,
                 meal_type_id: selectedMealType,
                 tag_ids: selectedTags,
+                new_tags: newTags,
                 ingredients,
                 instructions: directions,
             };
@@ -432,8 +453,11 @@ export default function CreateRecipe() {
                         <TagCombobox
                             allTags={allTags}
                             selectedTags={selectedTags}
+                            newTags={newTags}
                             onAdd={id => setSelectedTags(prev => [...prev, id])}
                             onRemove={id => setSelectedTags(prev => prev.filter(t => t !== id))}
+                            onAddNew={name => setNewTags(prev => [...prev, name])}
+                            onRemoveNew={name => setNewTags(prev => prev.filter(t => t !== name))}
                         />
                     </div>
 
