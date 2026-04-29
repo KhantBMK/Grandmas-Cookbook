@@ -66,28 +66,6 @@ export default function About() {
               </p>
             </div>
           </div>
-
-          {/* Expertise Section */}
-          <div className="border-t-2 border-orange-900/20 pt-8 mt-8">
-            <h3 className="text-2xl text-orange-900 mb-6">Check out our Recommendations!</h3>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-              <div className="border-2 border-orange-900/20 rounded-lg px-3 py-2 text-center bg-orange-50 hover:border-orange-600 transition-colors">
-                <p className="text-sm text-orange-900">Recommendation One</p>
-              </div>
-              <div className="border-2 border-orange-900/20 rounded-lg px-3 py-2 text-center bg-orange-50 hover:border-orange-600 transition-colors">
-                <p className="text-sm text-orange-900">Recommendation Two</p>
-              </div>
-              <div className="border-2 border-orange-900/20 rounded-lg px-3 py-2 text-center bg-orange-50 hover:border-orange-600 transition-colors">
-                <p className="text-sm text-orange-900">Recommendation Three</p>
-              </div>
-              <div className="border-2 border-orange-900/20 rounded-lg px-3 py-2 text-center bg-orange-50 hover:border-orange-600 transition-colors">
-                <p className="text-sm text-orange-900">Recommendation Four</p>
-              </div>
-              <div className="border-2 border-orange-900/20 rounded-lg px-3 py-2 text-center bg-orange-50 hover:border-orange-600 transition-colors">
-                <p className="text-sm text-orange-900">Recommendation<br />Five</p>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>

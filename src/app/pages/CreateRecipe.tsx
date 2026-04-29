@@ -449,7 +449,23 @@ export default function CreateRecipe() {
 
                     {/* Tags */}
                     <div className="mb-8">
-                        <h2 className="text-2xl text-orange-900 mb-4">Tags</h2>
+                        <div className="flex items-center gap-2 mb-4">
+                            <h2 className="text-2xl text-orange-900">Tags</h2>
+                            <button
+                                type="button"
+                                className="p-1.5 rounded-lg border-2 border-orange-900/20 text-orange-600 hover:border-orange-600 hover:bg-orange-50 transition-colors"
+                                title="AI Tag Suggestions"
+                            >
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
+                                    <line x1="12" y1="2" x2="12" y2="5" strokeLinecap="round" />
+                                    <circle cx="12" cy="1.5" r="1" fill="currentColor" stroke="none" />
+                                    <rect x="4" y="5" width="16" height="14" rx="2" />
+                                    <rect x="7" y="9" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" />
+                                    <rect x="14" y="9" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" />
+                                    <line x1="8" y1="15" x2="16" y2="15" strokeLinecap="round" />
+                                </svg>
+                            </button>
+                        </div>
                         <TagCombobox
                             allTags={allTags}
                             selectedTags={selectedTags}
