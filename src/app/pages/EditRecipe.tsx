@@ -248,6 +248,7 @@ export default function EditRecipe() {
     const [submitting, setSubmitting] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(true);
+    const [aiTagsActive, setAiTagsActive] = useState(false);
 
     useEffect(() => {
         if (!isLoggedIn) { navigate('/login', { replace: true }); return; }
@@ -492,20 +493,25 @@ export default function EditRecipe() {
                     <div className="mb-8">
                         <div className="flex items-center gap-2 mb-4">
                             <h2 className="text-2xl text-orange-900">Tags</h2>
-                            <button
-                                type="button"
-                                className="p-1.5 rounded-lg border-2 border-orange-900/20 text-orange-600 hover:border-orange-600 hover:bg-orange-50 transition-colors"
-                                title="AI Tag Suggestions"
-                            >
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
-                                    <line x1="12" y1="2" x2="12" y2="5" strokeLinecap="round" />
-                                    <circle cx="12" cy="1.5" r="1" fill="currentColor" stroke="none" />
-                                    <rect x="4" y="5" width="16" height="14" rx="2" />
-                                    <rect x="7" y="9" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" />
-                                    <rect x="14" y="9" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" />
-                                    <line x1="8" y1="15" x2="16" y2="15" strokeLinecap="round" />
-                                </svg>
-                            </button>
+                            <div className="relative group">
+                                <button
+                                    type="button"
+                                    onClick={() => setAiTagsActive(prev => !prev)}
+                                    className={`p-1.5 rounded-lg border-2 transition-colors ${aiTagsActive ? 'bg-orange-600 border-orange-600 text-white' : 'border-orange-900/20 text-orange-600 hover:border-orange-600 hover:bg-orange-50'}`}
+                                >
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="w-5 h-5">
+                                        <line x1="12" y1="2" x2="12" y2="5" strokeLinecap="round" />
+                                        <circle cx="12" cy="1.5" r="1" fill="currentColor" stroke="none" />
+                                        <rect x="4" y="5" width="16" height="14" rx="2" />
+                                        <rect x="7" y="9" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" />
+                                        <rect x="14" y="9" width="3" height="3" rx="0.5" fill="currentColor" stroke="none" />
+                                        <line x1="8" y1="15" x2="16" y2="15" strokeLinecap="round" />
+                                    </svg>
+                                </button>
+                                <div className="absolute left-0 top-full mt-2 z-30 w-64 px-3 py-2 bg-gray-800 text-white text-xs rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+                                    This toggle uses AI to add appropriate tags based on ingredients
+                                </div>
+                            </div>
                         </div>
                         <TagCombobox
                             allTags={allTags}
