@@ -31,7 +31,8 @@ router.post('/suggest-tags', async (req, res) => {
         res.json({ tags: matchedTags, new_tags: newTags });
     }
     catch (err) {
-        res.status(500).json({ error: 'Failed to suggest tags' });
+        console.error('AI suggest-tags error:', err);
+        res.status(500).json({ error: 'Failed to suggest tags', detail: err.message });
     }
 })
 
