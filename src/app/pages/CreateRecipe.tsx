@@ -302,6 +302,25 @@ export default function CreateRecipe() {
 
         setSubmitting(true);
         try {
+            // Start with current tag selections
+            let finalTagIds = [...selectedTags];
+            let finalNewTags = [...newTags];
+
+            // If AI toggle is on, fetch suggestions and merge them in before saving
+            if (aiTagsActive) {
+                const aiResult = await api.post('/ai/suggest-tags', {
+                    ingredients,
+                    selected_tag_ids: selectedTags,
+                });
+                if (aiResult.tags) {
+                    const aiIds = aiResult.tags.map((t: { id: number }) => t.id);
+                    finalTagIds = [...finalTagIds, ...aiIds.filter((id: number) => !finalTagIds.includes(id))];
+                }
+                if (aiResult.new_tags) {
+                    finalNewTags = [...finalNewTags, ...aiResult.new_tags.filter((name: string) => !finalNewTags.includes(name))];
+                }
+            }
+
             let image_url = '';
             if (imageFile) {
                 const formData = new FormData();
@@ -319,8 +338,8 @@ export default function CreateRecipe() {
                 servings: parseInt(servings) || 1,
                 cuisine_id: selectedCuisine,
                 meal_type_id: selectedMealType,
-                tag_ids: selectedTags,
-                new_tags: newTags,
+                tag_ids: finalTagIds,
+                new_tags: finalNewTags,
                 ingredients,
                 instructions: directions,
             };

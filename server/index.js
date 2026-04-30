@@ -22,6 +22,7 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/users', require('./routes/users'));
 app.use('/api/reference', require('./routes/reference'));
 app.use('/api/upload', require('./routes/upload'));
+app.use('/api/ai', require('./routes/ai'));
 
 // Server listening
 app.listen(PORT, () => {
