@@ -4,7 +4,7 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const suggestTags = async (ingredients, allTags) => {
     // Initialize inside the function so the key is read at call time not module load time
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash-lite' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
 
     const tagNames = allTags.map(t => t.name).join(', ');
     const ingredientList = ingredients.join(', ');
