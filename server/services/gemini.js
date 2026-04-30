@@ -12,8 +12,10 @@ const suggestTags = async (ingredients, allTags) => {
     const prompt = `Please generate up to 6 tags you believe is appropriate for the following set of ingredients for a recipe. Keep the tags about 2 words in length. You may generate new tags or use already existing tags when appropriate. Ingredients: ${ingredientList}, Available tags: ${tagNames}. Your return format must be just this: ["tag1", "tag2"]`;
     const result = await model.generateContent(prompt);
     const text = result.response.text().trim();
-    const cleaned = text.replace(/```json|```/g, '').trim();
-    return JSON.parse(cleaned);
+    // Extract just the JSON array from whatever Gemini returns
+    const match = text.match(/\[[\s\S]*\]/);
+    if (!match) return [];
+    return JSON.parse(match[0]);
 };
 
 // Exporting function
