@@ -1,12 +1,11 @@
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 
-// Establishing connection and selecting model
-console.log('GEMINI_API_KEY length:', process.env.GEMINI_API_KEY?.length, 'starts with:', process.env.GEMINI_API_KEY?.slice(0, 6));
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
-
 // Preparing tags
 const suggestTags = async (ingredients, allTags) => {
+    // Initialize inside the function so the key is read at call time not module load time
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+    const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+
     const tagNames = allTags.map(t => t.name).join(', ');
     const ingredientList = ingredients.join(', ');
     // Prompt for AI generation
