@@ -19,6 +19,7 @@ export default function Profile() {
     const { user, isLoggedIn } = useAuth();
     const navigate = useNavigate();
     const [savedRecipes, setSavedRecipes] = useState<SavedRecipe[]>([]);
+    const [createdRecipes, setCreatedRecipes] = useState<SavedRecipe[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -27,8 +28,12 @@ export default function Profile() {
             return;
         }
         if (user) {
-            api.get(`/users/${user.id}/saved-recipes`, true).then(data => {
-                setSavedRecipes(Array.isArray(data) ? data : []);
+            Promise.all([
+                api.get(`/users/${user.id}/saved-recipes`, true),
+                api.get(`/users/${user.id}/created-recipes`, true),
+            ]).then(([savedData, createdData]) => {
+                setSavedRecipes(Array.isArray(savedData) ? savedData : []);
+                setCreatedRecipes(Array.isArray(createdData) ? createdData : []);
                 setLoading(false);
             });
         }
@@ -53,8 +58,53 @@ export default function Profile() {
                         </div>
                     </div>
 
+                    {/* My Recipes */}
+                    <h2 className="text-2xl text-orange-900 mb-6">My Recipes</h2>
+                    {loading ? (
+                        <p className="text-orange-900/60">Loading...</p>
+                    ) : createdRecipes.length === 0 ? (
+                        <div className="text-center py-12 border-2 border-dashed border-orange-900/20 rounded-2xl">
+                            <p className="text-orange-900/60">No recipes created yet.</p>
+                            <Link to="/create" className="text-orange-600 hover:underline text-sm mt-2 inline-block">
+                                Create your first recipe
+                            </Link>
+                        </div>
+                    ) : (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {createdRecipes.map(recipe => (
+                                <Link
+                                    key={recipe.id}
+                                    to={`/recipe/${recipe.id}`}
+                                    className="flex gap-3 p-3 rounded-xl border-2 border-orange-900/10 hover:border-orange-600 bg-white transition-all group"
+                                >
+                                    {recipe.image_url ? (
+                                        <img
+                                            src={recipe.image_url}
+                                            alt={recipe.name}
+                                            className="w-16 h-16 object-cover rounded-lg flex-shrink-0"
+                                        />
+                                    ) : (
+                                        <div className="w-16 h-16 rounded-lg flex-shrink-0 bg-orange-50 border border-orange-900/10 flex items-center justify-center">
+                                            <svg viewBox="0 0 64 64" className="w-9 h-9 text-orange-300" fill="currentColor">
+                                                <rect x="6" y="34" width="20" height="20" rx="2" />
+                                                <polygon points="32,10 52,38 12,38" />
+                                                <circle cx="48" cy="46" r="10" />
+                                            </svg>
+                                        </div>
+                                    )}
+                                    <div className="flex-1 min-w-0">
+                                        <h3 className="text-orange-900 text-sm font-medium group-hover:text-orange-600 transition-colors line-clamp-2">
+                                            {recipe.name}
+                                        </h3>
+                                        <p className="text-orange-900/50 text-xs mt-1">{recipe.cuisine} · {recipe.meal_type}</p>
+                                    </div>
+                                </Link>
+                            ))}
+                        </div>
+                    )}
+
                     {/* Saved Recipes */}
-                    <h2 className="text-2xl text-orange-900 mb-6">Saved Recipes</h2>
+                    <h2 className="text-2xl text-orange-900 mb-6 mt-10">Saved Recipes</h2>
                     {loading ? (
                         <p className="text-orange-900/60">Loading...</p>
                     ) : savedRecipes.length === 0 ? (
@@ -81,11 +131,8 @@ export default function Profile() {
                                     ) : (
                                         <div className="w-16 h-16 rounded-lg flex-shrink-0 bg-orange-50 border border-orange-900/10 flex items-center justify-center">
                                             <svg viewBox="0 0 64 64" className="w-9 h-9 text-orange-300" fill="currentColor">
-                                                {/* square */}
                                                 <rect x="6" y="34" width="20" height="20" rx="2" />
-                                                {/* triangle */}
                                                 <polygon points="32,10 52,38 12,38" />
-                                                {/* circle */}
                                                 <circle cx="48" cy="46" r="10" />
                                             </svg>
                                         </div>

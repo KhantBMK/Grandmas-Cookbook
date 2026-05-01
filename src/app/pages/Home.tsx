@@ -86,11 +86,21 @@ export default function Home() {
                         <Link to={`/recipe/${recommendedRecipe.id}`} className="block group">
                             <div className="border-2 border-orange-900/20 rounded-3xl overflow-hidden bg-white hover:border-orange-600 transition-all h-full">
                                 <div className="aspect-[4/3] overflow-hidden relative">
-                                    <img
-                                        src={recommendedRecipe.image_url || 'https://images.unsplash.com/photo-1617735605078-8a9336be0816?w=400'}
-                                        alt={recommendedRecipe.name}
-                                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                                    />
+                                    {recommendedRecipe.image_url ? (
+                                        <img
+                                            src={recommendedRecipe.image_url}
+                                            alt={recommendedRecipe.name}
+                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-full bg-orange-50 flex items-center justify-center">
+                                            <svg viewBox="0 0 64 64" className="w-24 h-24 text-orange-300" fill="currentColor">
+                                                <rect x="6" y="34" width="20" height="20" rx="2" />
+                                                <polygon points="32,10 52,38 12,38" />
+                                                <circle cx="48" cy="46" r="10" />
+                                            </svg>
+                                        </div>
+                                    )}
                                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent flex flex-col items-center justify-end p-6 gap-2">
                                         <span className="text-xs text-orange-300 font-medium uppercase tracking-wider">Healthy Pick</span>
                                         <h2 className="text-2xl text-white group-hover:text-orange-300 transition-colors text-center">{recommendedRecipe.name}</h2>

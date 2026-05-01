@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { suggestTags } = require('../services/gemini');
+const { suggestTags } = require('../services/groq');
 const pool = require('../db/pool');
 
 router.post('/suggest-tags', async (req, res) => {
@@ -18,12 +18,12 @@ router.post('/suggest-tags', async (req, res) => {
         const suggestedNames = await suggestTags(ingredients, availableTags);
 
 
-        // Filter out undefined in case Gemini suggests a name not in the database
+        // Filter out undefined in case groq suggests a name not in the database
         const matchedTags = suggestedNames
             .map(name => allTags.find(t => t.name.toLowerCase() === name.toLowerCase()))
             .filter(Boolean);
 
-        // Any names Gemini suggested that didn't match an existing tag are new tags
+        // Any names groq suggested that didn't match an existing tag are new tags
         const matchedNames = matchedTags.map(t => t.name.toLowerCase());
         const newTags = suggestedNames.filter(name => !matchedNames.includes(name.toLowerCase()));
 
